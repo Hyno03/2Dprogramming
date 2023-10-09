@@ -8,6 +8,8 @@ class Boy:
         self.dir = 0
         self.action = 3
         self.image = load_image('animation_sheet.png')
+        self.state_machine = StateMachine()
+        self.state_machine.start()
 
     def update(self):
         self.frame = (self.frame + 1) % 8
@@ -30,4 +32,11 @@ class Idle:
 
     @staticmethod
     def do():
+        pass
+
+
+class StateMachine:
+    def __init__(self):
+        pass
+    def start(self):
         pass
