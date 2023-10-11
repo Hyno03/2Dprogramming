@@ -1,7 +1,16 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
-from pico2d import load_image
+from pico2d import load_image, SDL_KEYDOWN, SDLK_SPACE
 import math
+
+
+def space_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+
+
+def time_out(e):
+    return e[0] == 'TIME_OUT'
+
 
 class Idle:
 
@@ -21,6 +30,8 @@ class Idle:
     def draw(boy):
         boy.image.clip_draw(boy.frame * 100, boy.action * 100, 100, 100,
                             boy.x, boy.y)
+
+
 class Sleep:
 
     @staticmethod
@@ -38,8 +49,7 @@ class Sleep:
     @staticmethod
     def draw(boy):
         boy.image.clip_composite_draw(boy.frame * 100, boy.action * 100, 100, 100,
-                            math.pi / 2, '', boy.x - 25, boy.y - 25, 100,100)
-
+                                      math.pi / 2, '', boy.x - 25, boy.y - 25, 100, 100)
 
 
 class StateMachine:
@@ -55,9 +65,6 @@ class StateMachine:
 
     def draw(self):
         self.cur_state.draw(self.boy)
-
-
-
 
 
 class Boy:
