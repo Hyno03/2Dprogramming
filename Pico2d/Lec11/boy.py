@@ -1,6 +1,6 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
-from pico2d import load_image, SDL_KEYDOWN, SDLK_SPACE
+from pico2d import load_image, SDL_KEYDOWN, SDLK_SPACE, get_time
 import math
 
 
@@ -16,7 +16,7 @@ class Idle:
 
     @staticmethod
     def enter(boy):
-        pass
+        boy.idle_start_time = get_time()
 
     @staticmethod
     def exit(boy):
@@ -25,6 +25,8 @@ class Idle:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + 1) % 8
+        if get_time() - boy.idle_start_time > 3:
+            boy.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def draw(boy):
