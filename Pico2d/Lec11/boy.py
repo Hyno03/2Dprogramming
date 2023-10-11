@@ -1,34 +1,50 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
 from pico2d import load_image
-
-
+import math
 
 class Idle:
 
     @staticmethod
     def enter(boy):
-        print('Idle Enter')
+        pass
 
     @staticmethod
     def exit(boy):
-        print('Idle Exit')
+        pass
 
     @staticmethod
     def do(boy):
-        print('Idle Do')
+        boy.frame = (boy.frame + 1) % 8
 
     @staticmethod
     def draw(boy):
         boy.image.clip_draw(boy.frame * 100, boy.action * 100, 100, 100,
                             boy.x, boy.y)
+class Sleep:
+
+    @staticmethod
+    def enter(boy):
         pass
+
+    @staticmethod
+    def exit(boy):
+        pass
+
+    @staticmethod
+    def do(boy):
+        boy.frame = (boy.frame + 1) % 8
+
+    @staticmethod
+    def draw(boy):
+        boy.image.clip_composite_draw(boy.frame * 100, boy.action * 100, 100, 100,
+                            math.pi / 2, '', boy.x - 25, boy.y - 25, 100,100)
 
 
 
 class StateMachine:
     def __init__(self, boy):
-        self.cur_state = Idle
+        self.cur_state = Sleep
         self.boy = boy
 
     def start(self):
