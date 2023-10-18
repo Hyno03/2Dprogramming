@@ -2,6 +2,10 @@
 
 from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
 
+from Pico2d.Lec12 import game_world
+from Pico2d.Lec12.ball import Ball
+
+
 # state event check
 # ( state event type, event value )
 
@@ -167,7 +171,10 @@ class Boy:
         self.state_machine.draw()
 
     def fire_ball(self):
-        if self.face_dir == 1:
-            print('FIre ball right')
-        elif self.face_dir == -1:
-            print('FIre ball left')
+        ball = Ball(self.x, self.y, self.face_dir*10)
+        game_world.add_object(ball)
+
+        # if self.face_dir == 1:
+        #     print('FIre ball right')
+        # elif self.face_dir == -1:
+        #     print('FIre ball left')
