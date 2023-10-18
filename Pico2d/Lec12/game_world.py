@@ -13,3 +13,7 @@ def update():
 def render():
     for o in objects:
         o.draw()
+
+
+def remove_object(o):
+    objects.remove(o)

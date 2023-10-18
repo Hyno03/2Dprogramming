@@ -1,5 +1,8 @@
 from pico2d import load_image
 
+from Pico2d.Lec12 import game_world
+
+
 class Ball:
     image = None
 
@@ -13,3 +16,6 @@ class Ball:
 
     def update(self):
         self.x += self.velocity
+
+        if self.x < 25 or self.x > 800 -25:
+            game_world.remove_object(self)
