@@ -55,8 +55,10 @@ def draw():
     update_canvas()
 
 def pause():
+    boy.wait_time = 1000000000000000000000000000.0
     pass
 
 def resume():
+    boy.wait_time = get_time()
     pass
 
