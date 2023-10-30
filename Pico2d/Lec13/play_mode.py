@@ -49,14 +49,3 @@ def draw():
     update_canvas()
 
 
-open_canvas()
-init()
-# game loop
-while running:
-    handle_events()
-    update()
-    draw()
-    delay(0.01)
-
-finish()
-close_canvas()
