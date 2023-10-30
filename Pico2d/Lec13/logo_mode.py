@@ -20,7 +20,7 @@ def update():
     global running
 
     if get_time() - logo_start_time >= 2.0:
-        running = False
+        game_framework.quit()
     pass
 
 
