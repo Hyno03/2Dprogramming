@@ -1,5 +1,9 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
-
+PIXEL_PER_METER = (10.0/ 0.3)
+RUN_SPEED_KMPH = 20.0
+RUN_SPEED_MPM= RUN_SPEED_KMPH * 1000.0 / 60.0
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 from pico2d import get_time, load_image, load_font, clamp,  SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
 from ball import Ball, BigBall
 import game_world
@@ -99,7 +103,8 @@ class Run:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + 1) % 8
-        boy.x += boy.dir * 5
+        #boy.x += boy.dir * 5
+        boy.x += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600-25)
 
 
