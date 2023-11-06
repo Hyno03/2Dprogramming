@@ -6,6 +6,7 @@ from ball import Ball
 import game_world
 import game_framework
 
+
 # state event check
 # ( state event type, event value )
 
@@ -24,15 +25,16 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
+
 # time_out = lambda e : e[0] == 'TIME_OUT'
-
-
 
 
 # Boy Run Speed
@@ -48,15 +50,6 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
 
-
-
-
-
-
-
-
-
-
 class Idle:
 
     @staticmethod
@@ -67,7 +60,7 @@ class Idle:
             boy.action = 3
         boy.dir = 0
         boy.frame = 0
-        boy.wait_time = get_time() # pico2d import 필요
+        boy.wait_time = get_time()  # pico2d import 필요
         pass
 
     @staticmethod
@@ -87,14 +80,13 @@ class Idle:
         boy.image.clip_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, boy.x, boy.y)
 
 
-
 class Run:
 
     @staticmethod
     def enter(boy, e):
-        if right_down(e) or left_up(e): # 오른쪽으로 RUN
+        if right_down(e) or left_up(e):  # 오른쪽으로 RUN
             boy.dir, boy.action, boy.face_dir = 1, 1, 1
-        elif left_down(e) or right_up(e): # 왼쪽으로 RUN
+        elif left_down(e) or right_up(e):  # 왼쪽으로 RUN
             boy.dir, boy.action, boy.face_dir = -1, 0, -1
 
     @staticmethod
@@ -108,14 +100,12 @@ class Run:
     def do(boy):
         # boy.frame = (boy.frame + 1) % 8
         boy.x += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
-        boy.x = clamp(25, boy.x, 1600-25)
+        boy.x = clamp(25, boy.x, 1600 - 25)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-
 
     @staticmethod
     def draw(boy):
         boy.image.clip_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, boy.x, boy.y)
-
 
 
 class Sleep:
@@ -132,7 +122,6 @@ class Sleep:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-
 
     @staticmethod
     def draw(boy):
@@ -174,9 +163,6 @@ class StateMachine:
         self.cur_state.draw(self.boy)
 
 
-
-
-
 class Boy:
     def __init__(self):
         self.x, self.y = 50, 90
@@ -190,11 +176,10 @@ class Boy:
         self.state_machine.start()
         self.ball_count = 10
 
-
     def fire_ball(self):
         if self.ball_count > 0:
             self.ball_count -= 1
-            ball = Ball(self.x, self.y, self.face_dir*10)
+            ball = Ball(self.x, self.y, self.face_dir * 10)
             game_world.add_object(ball)
 
     def update(self):
@@ -205,6 +190,7 @@ class Boy:
 
     def draw(self):
         self.state_machine.draw()
-        self.font.draw(self.x-10, self.y + 50, f'{self.ball_count:02d}', (255, 255, 0))
+        self.font.draw(self.x - 10, self.y + 50, f'{self.ball_count:02d}', (255, 255, 0))
 
-    # fill here
+    def get_bb(self):
+        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
