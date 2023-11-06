@@ -13,6 +13,7 @@ class Ball:
 
     def draw(self):
         self.image.draw(self.x, self.y)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.x += self.velocity * 100 * game_framework.frame_time

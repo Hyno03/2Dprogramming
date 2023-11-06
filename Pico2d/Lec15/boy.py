@@ -191,6 +191,8 @@ class Boy:
     def draw(self):
         self.state_machine.draw()
         self.font.draw(self.x - 10, self.y + 50, f'{self.ball_count:02d}', (255, 255, 0))
+        #디버그용 바운딩 박스 그리기
+        draw_rectangle(*self.get_bb()) #튜플을 풀어 헤쳐서 인자로 전달
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
