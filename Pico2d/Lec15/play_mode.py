@@ -37,7 +37,11 @@ def init():
     balls = [Ball(random.randint(0, 1600),60,0)for _ in range(50)]
     game_world.add_objects(balls,1)
 
+    game_world.add_collision_pair('boy:ball',boy,None)  #소년을 등록
+    for ball in balls:
+        game_world.add_collision_pair('boy:ball', None, ball)
 
+    
 
 def finish():
     game_world.clear()
@@ -46,12 +50,7 @@ def finish():
 
 def update():
     game_world.update()
-    for ball in balls.copy():
-        if game_world.collide(boy, ball):
-            print('Collision boy:ball')
-            boy.ball_count += 1
-            balls.remove(ball)
-            game_world.remove_object(ball)
+    game_world.handle_collisions()
 def draw():
     clear_canvas()
     game_world.render()
