@@ -33,7 +33,9 @@ def init():
     boy = Boy()
     game_world.add_object(boy, 1)
 
-    # fill here
+    global balls
+    balls = [Ball(random.randint(0, 1600),60,0)for _ in range(50)]
+    game_world.add_objects(balls,1)
 
 
 
