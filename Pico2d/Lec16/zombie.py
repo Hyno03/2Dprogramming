@@ -132,6 +132,8 @@ class Zombie:
         c1 = Condition('소년이 근처에 있는가?', self.is_boy_nearby, 7)
         a4 = Action('소년으로 이동', self.move_to_boy)
 
-        root = SEQ_chase_boy = Sequence('소년을 추적', c1, a4)
+        SEQ_chase_boy = Sequence('소년을 추적', c1, a4)
+
+        root = SEL_chase_or_wander = Selector('추적 또는 배회', SEQ_chase_boy, SEQ_wander)
 
         self.bt = BehaviorTree(root)
