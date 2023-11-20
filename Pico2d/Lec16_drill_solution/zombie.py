@@ -122,21 +122,45 @@ class Zombie:
         self.loc_no = (self.loc_no + 1) % len(self.patrol_locations)
         return BehaviorTree.SUCCESS
 
+    def run_slightly_away(self, tx, ty):
+        self.dir = math.atan2(self.y - ty, self.x - tx)
+        self.speed = RUN_SPEED_PPS
+        self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
+        self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
+
+    def run_away_from_boy(self):
+        self.state = 'Walk'
+        self.run_slightly_away(play_mode.boy.x, play_mode.boy.y)
+        return BehaviorTree.RUNNING
+
+    def is_weak(self):
+        if self.ball_count < play_mode.boy.ball_count:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
     def build_behavior_tree(self):
         a1 = Action('Set target location', self.set_target_location, 500, 50)
         a2 = Action('Move to', self.move_to)
-        root = SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
+        SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
 
         a3 = Action('Set random location', self.set_random_location)
-        root = SEQ_wander = Sequence('Wander', a3, a2)
+        SEQ_wander = Sequence('Wander', a3, a2)
 
         c1 = Condition('소년이 근처에 있는가?', self.is_boy_nearby, 7)
         a4 = Action('접근', self.move_to_boy)
-        root = SEQ_chase_boy = Sequence('소년을 추적', c1, a4)
 
         a5 = Action('순찰 위치 가져오기', self.get_patrol_location)
         SEQ_patrol = Sequence('순찰', a5, a2)
 
-        root = SEL_chase_or_flee = Selector('추적 또는 배회', SEQ_chase_boy, SEQ_wander)
+        c2 = Condition('좀비가 약한가?',self.is_weak)
+        a6 = Action('소년으로부터 멀어지기', self.run_away_from_boy)
+
+        SEQ_run_away = Sequence('소년보다 약하면 도망', c2, c1, a6)
+        SEQ_patrol_boy = Sequence('소년보다 강하면 추적', c1, a4)
+        SEQ_boy = Selector('소년 추적', SEQ_run_away, SEQ_patrol_boy)
+
+        root = Selector('소년 추적 또는 배회', SEQ_boy, SEQ_patrol)
+
 
         self.bt = BehaviorTree(root)

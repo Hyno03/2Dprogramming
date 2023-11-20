@@ -32,7 +32,8 @@ def init():
     game_world.add_object(boy, 2)
     game_world.add_collision_pair('boy:ball', boy, None)
 
-    zombie = Zombie(300, 300)
+    # for i in range(10):
+    zombie = Zombie()
     game_world.add_object(zombie, 2)
     game_world.add_collision_pair('zombie:ball', zombie, None)
 
