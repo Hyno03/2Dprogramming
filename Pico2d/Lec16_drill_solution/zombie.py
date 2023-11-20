@@ -139,6 +139,20 @@ class Zombie:
         else:
             return BehaviorTree.FAIL
 
+    def is_ball_nearby(self, distance):
+        if self.distance_less_than(play_mode.balls.x, play_mode.balls.y, self.x, self.y, distance):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def move_to_ball(self, r = 0.5):
+        self.state = 'Walk'
+        self.move_slightly_to(play_mode.balls.x, play_mode.balls.y)
+        if self.distance_less_than(play_mode.balls.x, play_mode.balls.y, self.x, self.y, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
     def build_behavior_tree(self):
         a1 = Action('Set target location', self.set_target_location, 500, 50)
         a2 = Action('Move to', self.move_to)
@@ -151,11 +165,14 @@ class Zombie:
         a4 = Action('접근', self.move_to_boy)
 
         a5 = Action('순찰 위치 가져오기', self.get_patrol_location)
-        SEQ_patrol = Sequence('순찰', a5, a2)
 
         c2 = Condition('좀비가 약한가?',self.is_weak)
         a6 = Action('소년으로부터 멀어지기', self.run_away_from_boy)
 
+        c3 = Condition('공이 주변에 있는가', self.is_ball_nearby, 0.5)
+        a7 = Action('좀비가 공을 먹으러 가기', self.move_to_ball)
+        SEQ_ball = Sequence('공 먹기', c3, a7)
+        SEQ_patrol = Sequence('순찰 및 공 먹기', a5, SEQ_ball, a2)
         SEQ_run_away = Sequence('소년보다 약하면 도망', c2, c1, a6)
         SEQ_patrol_boy = Sequence('소년보다 강하면 추적', c1, a4)
         SEQ_boy = Selector('소년 추적', SEQ_run_away, SEQ_patrol_boy)
