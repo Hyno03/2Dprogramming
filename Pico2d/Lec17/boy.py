@@ -278,6 +278,8 @@ class Boy:
 
     def set_background(self, bg):
         # fill here
+        self.bg = bg
+        self.x, self.y = self.bg.w // 2, self.bg.h // 2
         pass
 
     def update(self):
@@ -288,6 +290,9 @@ class Boy:
 
     def draw(self):
         # fill here
+        sx, sy = self.x - self.bg.window_left, self.y - self.bg.window_bottom
+        self.image.clip_draw(int(self.frame) * 100, self.action * 100, 100, 100,
+                             sx,sy)
         pass
 
     def get_bb(self):
