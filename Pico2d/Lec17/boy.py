@@ -253,6 +253,8 @@ class StateMachine:
         self.boy.x += math.cos(self.boy.dir) * self.boy.speed * game_framework.frame_time
         self.boy.y += math.sin(self.boy.dir) * self.boy.speed * game_framework.frame_time
 
+        self.boy.x = clamp(50, self.boy.x, self.boy.bg.w - 50)
+        self.boy.y = clamp(50, self.boy.y, self.boy.bg.h - 50)
         # fill here
 
     def handle_event(self, e):
