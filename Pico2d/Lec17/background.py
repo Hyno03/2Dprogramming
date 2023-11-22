@@ -44,6 +44,7 @@ class TileBackground:
         self.h = 600 * 3
 
         # fill here
+        self.tiles = [ [ load_image('cube%d%d.png' % (x, y)) for x in range(3)] for y in range(3)]
 
 
 
@@ -55,6 +56,15 @@ class TileBackground:
         self.window_bottom = clamp(0, int(server.boy.y) - self.ch // 2, self.h - self.ch - 1)
 
         # fill here
+        tile_left, tile_right = self.window_left // 800, (self.window_left + self.cw) // 800
+        left_offset = self.window_left  % 800
+
+        tile_bottom, tile_top = self.window_bottom // 600, (self.window_bottom + self.ch) // 600
+        bottom_offset = self.window_bottom % 600
+
+        for ty in range(tile_bottom, tile_top + 1):
+            for tx in range(tile_left, tile_right + 1):
+                self.tiles[ty][tx].draw_to_origin(-left_offset + (tx - tile_left) * 800, -bottom_offset + (ty - tile_bottom) * 600)
         pass
 
 
