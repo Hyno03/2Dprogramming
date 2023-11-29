@@ -1,4 +1,7 @@
 import pickle
+import server
+from boy import Boy
+from background import FixedBackground as Background
 
 objects = [[] for _ in range(4)]
 collision_pairs = {}
@@ -90,8 +93,23 @@ def all_objects():
 
 def save():
     # fill here
+    world = [objects, collision_pairs]
+    with open('game.sav', 'wb') as f:
+        pickle.dump(world, f)
     pass
 
 def load():
     # fill here
+    with open('game.sav', 'rb') as f:
+        world = pickle.load(f)
+    global objects, collision_pairs
+    objects, collision_pairs = world[0], world[1]
+
+    #모든 객체를 살펴서, 그중, noy와 background 객체를 찾아서, server에 연결
+    for layer in objects:
+        for o in layer:
+            if isinstance(o, Boy):
+                server.boy = o
+            elif isinstance(o, Background):
+                server.background = o
     pass

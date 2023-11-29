@@ -66,7 +66,7 @@ def handle_events():
             create_new_world()
             game_framework.change_mode(play_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_l:
-            load_saved_world()
+            game_world.load()
             game_framework.change_mode(play_mode)
 
 def update():
