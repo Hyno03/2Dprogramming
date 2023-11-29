@@ -1,16 +1,12 @@
+import pickle
+
 class Npc:
-    def __init__(self, x, y, size):
-        self.x, self.y, self.size = x,y,size
+    def __init__(self, name, x, y, size):
+        self.name, self.x, self.y, self.size = name,x,y,size
 
-npc1 = Npc(1,2,4.5)
-npc2 = Npc(100,300,2.5)
+npc1 = Npc('jenny', 1,2,4.5)
+npc2 = Npc('jisu', 100,300,2.5)
 
-print(type(npc1.__dict__))
-print(npc1.__dict__)
-
-npc1.x = 100
-npc1.__dict__.update({'x' :500})
-
-print(type(npc1.__dict__))
-print(npc1.__dict__)
-
+group = [npc1, npc2]
+with open('npc.pickle', 'wb') as f:
+    pickle.dump(group, f)
