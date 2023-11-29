@@ -16,6 +16,11 @@ class Ball:
         self.x = x if x else random.randint(100, server.background.w - 100)
         self.y = y if y else random.randint(100, server.background.h - 100)
 
+        if not Ball.boy_eat_sound:
+            Ball.zombie_eat_sound = load_wav('zombie_pickup.wav')
+            Ball.boy_eat_sound = load_wav('pickup.wav')
+            Ball.zombie_eat_sound.set_volume(32)
+            Ball.boy_eat_sound.set_volume(32)
         # fill here
 
     def draw(self):
@@ -30,5 +35,8 @@ class Ball:
     def handle_collision(self, group, other):
         match group:
             case 'boy:ball':
-                # fill here
+                Ball.boy_eat_sound.play()
+                game_world.remove_object(self)
+            case 'zombie:ball':
+                Ball.zombie_eat_sound.play()
                 game_world.remove_object(self)
