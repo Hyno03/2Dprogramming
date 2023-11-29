@@ -87,7 +87,9 @@ def handle_collisions():
 
 
 def all_objects():
-    # fill here
+    for layer in objects:
+        for o in layer:
+            yield o
     pass
 
 
