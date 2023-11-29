@@ -41,6 +41,11 @@ def create_new_world():
     game_world.add_object(server.boy, 1)
 
     # fill here
+    f = open('zombie_data.json', 'rb')
+    zombie_data_list = json.load(f)
+    for z in zombie_data_list:
+        zombie = Zombie(z['name'],z['x'],z['y'],z['size'])
+        game_world.add_object(zombie,0)
 
 
 def load_saved_world():
